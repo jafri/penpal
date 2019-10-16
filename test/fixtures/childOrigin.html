@@ -14,7 +14,7 @@
     <script type="text/javascript" src="penpal.js"></script>
     <script type="text/javascript">
       // A cheap way to get the parent origin for our tests.
-      var parentOrigin = document.referrer.substring(
+      var allowedOrigin = document.referrer.substring(
         0,
         document.referrer.lastIndexOf('/')
       );
@@ -26,7 +26,7 @@
       };
 
       Penpal.connectToParent({
-        parentOrigin: parentOrigin,
+        allowedOrigins: [allowedOrigin],
         methods: methods
       });
     </script>

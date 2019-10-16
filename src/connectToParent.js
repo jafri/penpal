@@ -26,7 +26,12 @@ import createLogger from './createLogger';
  * for the parent to respond before rejecting the connection promise.
  * @return {Parent}
  */
-export default ({ parentOrigin = '*', methods = {}, timeout, debug } = {}) => {
+export default ({
+  allowedOrigins = ['*'],
+  methods = {},
+  timeout,
+  debug
+} = {}) => {
   const log = createLogger(debug);
 
   if (window === window.top) {
@@ -74,11 +79,14 @@ export default ({ parentOrigin = '*', methods = {}, timeout, debug } = {}) => {
         return;
       }
 
-      if (parentOrigin !== '*' && parentOrigin !== event.origin) {
+      if (
+        !allowedOrigins.includes('*') &&
+        !allowedOrigins.includes(event.origin)
+      ) {
         log(
           `Child received handshake reply from origin ${
             event.origin
-          } which did not match expected origin ${parentOrigin}`
+          } which did not match expected origins ${allowedOrigins.join(' ')}.`
         );
         return;
       }
@@ -127,13 +135,15 @@ export default ({ parentOrigin = '*', methods = {}, timeout, debug } = {}) => {
 
     log('Child: Sending handshake');
 
-    parent.postMessage(
-      {
-        penpal: HANDSHAKE,
-        methodNames: Object.keys(methods)
-      },
-      parentOrigin
-    );
+    for (const origin of allowedOrigins) {
+      parent.postMessage(
+        {
+          penpal: HANDSHAKE,
+          methodNames: Object.keys(methods)
+        },
+        origin
+      );
+    }
   });
 
   return {

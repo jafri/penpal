@@ -5,8 +5,7 @@
     <script type="text/javascript">
       window.addEventListener('load', function() {
         const iframe = document.createElement('iframe');
-        iframe.src =
-          'file:///Users/aahardy/dev/penpal/test/manual/file/child.html';
+        iframe.src = 'http://127.0.0.1:8083/';
         document.body.appendChild(iframe);
 
         const connection = Penpal.connectToChild({

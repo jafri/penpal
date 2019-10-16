@@ -8,5 +8,9 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
+  },
+  "rules": {
+    "no-useless-escape": 0,
+    "no-console": 0
   }
 }
